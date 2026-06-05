@@ -593,14 +593,14 @@
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 51, 102);
-      doc.text('Rotary', cW / 2 - 5, 10.5, { align: 'right' });
-      drawGear(doc, cW / 2 + 4, 9.5, 3.5);
+      doc.text('Rotary', cW / 2 - 5, 9.5, { align: 'right' });
+      drawGear(doc, cW / 2 + 4, 8.5, 3.2);
     }
 
     // Divider
     doc.setDrawColor(180, 180, 180);
     doc.setLineWidth(0.2);
-    doc.line(lx, 14, rx, 14);
+    doc.line(lx, 13, rx, 13);
 
     // Helper: draw a field row
     function fieldRow(label, value, y, rightEdge) {
@@ -623,11 +623,11 @@
       }
     }
 
-    let y = 17.5;
-    fieldRow('Rotarian', name, y);       y += 4;
-    fieldRow('Rotary Club of', club, y); y += 4;
-    fieldRow('Classification', cls, y);  y += 4;
-    fieldRow('Office Held', office, y);  y += 4;
+    let y = 15.5;
+    fieldRow('Rotarian', name, y);       y += 3.2;
+    fieldRow('Rotary Club of', club, y); y += 3.2;
+    fieldRow('Classification', cls, y);  y += 3.2;
+    fieldRow('Office Held', office, y);  y += 3.2;
 
     // Signature row
     doc.setFontSize(5.5);
@@ -650,18 +650,18 @@
     doc.setFont('helvetica', 'italic');
     doc.setTextColor(120, 120, 120);
     doc.text('Visiting Rotarian', rx, y, { align: 'right' });
-    y += 5;
+    y += 4;
 
     // Blue welcome banner
     doc.setFillColor(0, 51, 102);
-    doc.rect(0, y - 2.5, cW, 6.5, 'F');
+    doc.rect(0, y - 2, cW, 5.5, 'F');
     doc.setFontSize(5.5);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(255, 255, 255);
     doc.setCharSpace(0.3);
-    doc.text('We welcome you to our Regular meeting', cW / 2, y + 1.5, { align: 'center' });
+    doc.text('We welcome you to our Regular meeting', cW / 2, y + 1.2, { align: 'center' });
     doc.setCharSpace(0);
-    y += 8;
+    y += 7;
 
     // Day + Date on same row
     doc.setFontSize(5.5);
@@ -696,9 +696,9 @@
       doc.setTextColor(0, 51, 102);
       doc.text(dateStr, rx, y, { align: 'right' });
     }
-    y += 4;
+    y += 3.2;
 
-    fieldRow('Rotary Club of', hostclub, y); y += 4;
+    fieldRow('Rotary Club of', hostclub, y); y += 3.2;
     fieldRow('Secretary', sec, y);
 
     // Footer
@@ -706,7 +706,7 @@
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 51, 102);
     doc.setCharSpace(0.9);
-    doc.text('PLEASE DO VISIT AGAIN', lx, cH - 3.5);
+    doc.text('PLEASE DO VISIT AGAIN', lx, cH - 3);
     doc.setCharSpace(0);
 
     const fname = name ? name.replace(/\s+/g, '-').toLowerCase() : 'rotarian';
