@@ -576,13 +576,22 @@
     doc.setFillColor(248, 246, 236);
     doc.rect(0, 0, cW, cH, 'F');
 
-    // VISITING ROTARIAN title
-    doc.setFontSize(6);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(30, 30, 30);
-    doc.setCharSpace(1.5);
-    doc.text('VISITING ROTARIAN', cW / 2, 6, { align: 'center' });
-    doc.setCharSpace(0);
+    // Helper: draw centred text, auto-shrinking font size until it fits maxW
+    function fitCentredText(text, font, style, maxSize, minSize, maxW, cx, yPos, color) {
+      doc.setFont(font, style);
+      doc.setTextColor(...color);
+      let fs = maxSize;
+      doc.setFontSize(fs);
+      while (fs > minSize && doc.getTextWidth(text) > maxW) {
+        fs -= 0.25;
+        doc.setFontSize(fs);
+      }
+      doc.text(text, cx, yPos, { align: 'center' });
+    }
+
+    // VISITING ROTARIAN — no charSpace so it cannot overflow the card edge
+    const usableW = cW - lx * 2;
+    fitCentredText('VISITING ROTARIAN', 'helvetica', 'bold', 7, 4, usableW, cW / 2, 6, [30, 30, 30]);
 
     // Logo + brand
     if (ROTARY_LOGO_BASE64) {
@@ -658,12 +667,8 @@
     // Blue welcome banner
     doc.setFillColor(0, 51, 102);
     doc.rect(0, y - 2, cW, 8, 'F');
-    doc.setFontSize(4.5);
-    doc.setFont('helvetica', 'bold');
     doc.setTextColor(255, 255, 255);
-    doc.setCharSpace(0.3);
-    doc.text('We welcome you to our Regular meeting', cW / 2, y + 2.5, { align: 'center' });
-    doc.setCharSpace(0);
+    fitCentredText('We welcome you to our Regular meeting', 'helvetica', 'bold', 6.5, 4, usableW, cW / 2, y + 2.5, [255, 255, 255]);
     y += 11;
 
     // Day and Date on separate rows (portrait)
@@ -673,13 +678,8 @@
     fieldRow('Rotary Club of', hostclub, y); y += 5;
     fieldRow('Secretary', sec, y);
 
-    // Footer
-    doc.setFontSize(5.5);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(0, 51, 102);
-    doc.setCharSpace(0.9);
-    doc.text('PLEASE DO VISIT AGAIN', lx, cH - 5);
-    doc.setCharSpace(0);
+    // Footer — centred, auto-fit so it never clips
+    fitCentredText('PLEASE DO VISIT AGAIN', 'helvetica', 'bold', 6.5, 4, usableW, cW / 2, cH - 5, [0, 51, 102]);
 
     const fname = name ? name.replace(/\s+/g, '-').toLowerCase() : 'rotarian';
     doc.save('rotary-visiting-card-' + fname + '.pdf');
