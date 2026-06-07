@@ -532,22 +532,8 @@
     }
   }
 
-  /*
-    LOGO IN PDF:
-    To embed the real Rotary logo in the PDF output, you need to convert
-    the logo image to a base64 data URL and replace ROTARY_LOGO_BASE64 below.
-
-    How to get the base64 string:
-    1. Go to https://www.base64-image.de/
-    2. Upload your rotary-logo.png
-    3. Copy the base64 string (starts with data:image/png;base64,...)
-    4. Replace the empty string below:
-
-    const ROTARY_LOGO_BASE64 = 'data:image/png;base64,iVBORw0KGgo...';
-
-    Then in generatePDF(), uncomment the doc.addImage() line.
-  */
-  const ROTARY_LOGO_BASE64 = '';
+  // Just grab the <img> element directly — jsPDF accepts HTMLImageElement in addImage()
+  const logoImg = document.querySelector('header img');
 
   function generatePDF() {
     const status = document.getElementById('status');
@@ -594,14 +580,12 @@
     fitCentredText('VISITING ROTARIAN', 'helvetica', 'bold', 7, 4, usableW, cW / 2, 6, [30, 30, 30]);
 
     // Logo + brand
-    if (ROTARY_LOGO_BASE64) {
-      // Uncomment below when you have the base64 string:
-      // doc.addImage(ROTARY_LOGO_BASE64, 'PNG', cW/2 - 2, 6, 7, 7);
-      // doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(0,51,102);
-      // doc.text('Rotary', cW/2 + 6, 11);
-    }
-    // Fallback gear (used when no logo base64 is set)
-    if (!ROTARY_LOGO_BASE64) {
+    if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+      const logoH = 7;
+      const logoW = logoH * (logoImg.naturalWidth / logoImg.naturalHeight);
+      doc.addImage(logoImg, 'PNG', cW / 2 - logoW / 2, 7, logoW, logoH);
+    } else {
+      // Fallback SVG gear if logo file isn't found
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 51, 102);
